@@ -2,7 +2,8 @@
 
 #include <cstddef>
 #include <functional>
-#include <vector>
+
+#include "series.hpp"
 
 namespace cas {
 
@@ -12,7 +13,6 @@ Function Sine(const float amplitude, const float frequency);
 Function WhiteNoise(const float amplitude);
 Function GaussianNoise(const float sigma);
 
-std::vector<float> GenerateSamples(Function function, size_t N,
-                                   float sample_freq);
+Series GenerateSamples(Function function, size_t N, float sample_freq);
 
 }  // namespace cas

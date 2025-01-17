@@ -2,9 +2,9 @@
 #include <math.h>
 
 #include <random>
-#include <vector>
 
 #include "caslib/functions.hpp"
+#include "caslib/series.hpp"
 
 namespace cas {
 
@@ -28,8 +28,7 @@ Function GaussianNoise(const float sigma) {
     return [=](const float time) { return sigma * dist(generator); };
 }
 
-std::vector<float> GenerateSamples(Function function, size_t N,
-                                   float sample_freq) {
+Series GenerateSamples(Function function, size_t N, float sample_freq) {
     std::vector<float> samples;
     for (size_t i = 0; i < N; ++i) {
         float t = static_cast<float>(i) / sample_freq;
