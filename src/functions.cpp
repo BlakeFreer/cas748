@@ -4,7 +4,7 @@
 #include <random>
 #include <vector>
 
-#include "caslib/waves.hpp"
+#include "caslib/functions.hpp"
 
 namespace cas {
 

@@ -1,6 +1,6 @@
 #include <iostream>
 
-#include "caslib/waves.hpp"
+#include "caslib/functions.hpp"
 
 using namespace cas;
 
@@ -17,7 +17,7 @@ int main() {
     for (auto [f, name] : functions) {
         std::cout << name << std::endl;
 
-        auto samples = GenerateSamples(f, 12, 4);
+        auto samples = GenerateSamples(f, 12, 12);
         for (auto s : samples) {
             std::cout << s << std::endl;
         }

@@ -1,1 +1,1 @@
-target_sources(caslib PRIVATE waves.cpp)
+target_sources(caslib PRIVATE functions.cpp)
