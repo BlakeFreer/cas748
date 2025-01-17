@@ -1,0 +1,1 @@
+target_sources(caslib PRIVATE waves.cpp)
