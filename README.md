@@ -2,16 +2,17 @@
 
 Code for CAS 748. Also practicing C++, CMake, and GoogleTest.
 
-## Compiling
+## Usage
 
-Configure the CMake project. Do this once.
+To use `caslib` in another project, first build the library archive.
 
 ```bash
 cmake -S. -Bbuild -G"Unix Makefiles"
+cmake --build build
 ```
 
-Build
+This generates `build/libcaslib.a`. Compile your project against it.
 
 ```bash
-cmake --build build
+g++ main.cpp -L build -l caslib -I inc
 ```

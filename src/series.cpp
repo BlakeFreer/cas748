@@ -1,4 +1,5 @@
 #include <cassert>
+#include <ostream>
 
 #include "caslib/series.hpp"
 
@@ -49,3 +50,10 @@ Series operator/(const Series& x, const float divisor) {
 }
 
 }  // namespace  cas
+
+std::ostream& operator<<(std::ostream& o, const cas::Series& x) {
+    for (auto xi : x) {
+        o << xi << std::endl;
+    }
+    return o;
+}

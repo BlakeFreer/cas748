@@ -1,5 +1,6 @@
 #pragma once
 
+#include <ostream>
 #include <vector>
 
 namespace cas {
@@ -14,3 +15,5 @@ Series operator-(const Series& x);
 Series operator/(const Series& x, const float divisor);
 
 }  // namespace cas
+
+std::ostream& operator<<(std::ostream& o, const cas::Series& s);

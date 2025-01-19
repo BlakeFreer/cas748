@@ -1,6 +1,7 @@
 target_sources(caslib
     PRIVATE
-    functions.cpp
-    series.cpp
     analyze.cpp
+    functions.cpp
+    io.cpp
+    series.cpp
 )
