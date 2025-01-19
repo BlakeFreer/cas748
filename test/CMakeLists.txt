@@ -3,6 +3,7 @@ enable_testing()
 add_executable(
     test
     helpers.cpp
+    test_analyze_stats.cpp
     test_cross_correlation.cpp
     test_series_operator.cpp
 )

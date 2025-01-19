@@ -21,7 +21,6 @@ TEST(SeriesOperator, multiply) {
     float scalar = -0.5;
     Series expected{-0.5, -1.0, -1.5};
 
-    // Test both term orders
     CompareSeries(-0.5 * x, expected);
     CompareSeries(x * -0.5, expected);
 }
