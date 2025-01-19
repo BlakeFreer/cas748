@@ -7,12 +7,12 @@
 using namespace cas;
 
 int main() {
-    Series loaded = Load("a1.data");
+    Series loaded = Load("input.csv");
     std::cout << PrettyPrint(loaded);
 
     auto noisy = loaded + GenerateSamples(WhiteNoise(0.5), loaded.size(), 1);
 
-    Save(noisy, "a1.data.noisy");
+    Save(noisy, "noisy.csv.out");
 
     return 0;
 }
