@@ -40,4 +40,12 @@ Series operator-(const Series& x, const Series& y) {
     return x + -y;
 }
 
+Series operator/(const Series& x, const float divisor) {
+    Series output;
+    for (auto xi : x) {
+        output.push_back(xi / divisor);
+    }
+    return output;
+}
+
 }  // namespace  cas

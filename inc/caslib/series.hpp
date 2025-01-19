@@ -11,5 +11,6 @@ Series operator-(const Series& x, const Series& y);
 Series operator*(const Series& x, const float scalar);
 Series operator*(const float scalar, const Series& x);
 Series operator-(const Series& x);
+Series operator/(const Series& x, const float divisor);
 
 }  // namespace cas

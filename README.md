@@ -1,6 +1,6 @@
 # caslib
 
-Code for CAS 748
+Code for CAS 748. Also practicing C++, CMake, and GoogleTest.
 
 ## Compiling
 
