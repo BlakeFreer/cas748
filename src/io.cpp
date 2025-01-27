@@ -1,10 +1,13 @@
+#include "caslib/io.hpp"
+
 #include <cassert>
+#include <cmath>
 #include <filesystem>
 #include <fstream>
+#include <iostream>
 #include <sstream>
 #include <string>
 
-#include "caslib/io.hpp"
 #include "caslib/series.hpp"
 
 namespace cas {
@@ -64,7 +67,12 @@ std::vector<Series> LoadSeries(const std::string& filename) {
                 columns.push_back(Series{});
             }
             if (!token.empty()) {
-                columns[column].push_back(std::stof(token));
+                try {
+                    columns[column].push_back(std::stof(token));
+                } catch (std::invalid_argument e) {
+                    std::cerr << "Could not parse " << token << std::endl;
+                    columns[column].push_back(NAN);
+                }
             }
             column++;
         }
