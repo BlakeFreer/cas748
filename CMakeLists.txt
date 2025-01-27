@@ -12,7 +12,12 @@ target_include_directories(caslib PUBLIC inc)
 add_subdirectory(src)
 add_subdirectory(examples)
 
-# Testing
-set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
-add_subdirectory(third-party/googletest)
-add_subdirectory(test)
+set(GTEST_PATH "third-party/googletest")
+
+if(EXISTS ${GTEST_PATH}/CMakeLists.txt)
+    set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+    add_subdirectory(${GTEST_PATH})
+    add_subdirectory(test)
+else()
+    message(WARNING "Skipping tests as GoogleTest is not installed.")
+endif()
