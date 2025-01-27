@@ -14,5 +14,10 @@ int main() {
 
     Save(noisy, "noisy.csv.out");
 
+    std::cout
+        << "Output saved to `noise.csv.out`. "
+        << "The data points have noise added to them relative to `noise.csv`."
+        << std::endl;
+
     return 0;
 }
