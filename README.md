@@ -36,4 +36,4 @@ cd build/test
 ./test
 ```
 
-__Warning:__ Do not run `./build/test/test` from the `caslib since it requires files relative to the executable's directory.
+__Warning:__ Do not run `./build/test/test` from the `caslib/` directory since it requires files relative to the executable's directory.
