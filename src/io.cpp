@@ -17,19 +17,19 @@ std::string PrettyPrint(const Series& s) {
 
     const int kMaxLines = 10;
 
-    if (s.size() <= kMaxLines) {
-        for (auto f : s) {
-            o << f << std::endl;
+    if (s.Size() <= kMaxLines) {
+        for (size_t i = 0; i < s.Size(); i++) {
+            o << s[i] << std::endl;
         }
     } else {
         int display = kMaxLines / 2;
         for (size_t i = 0; i < display; i++) {
             o << s[i] << std::endl;
         }
-        o << "... (omitted " << s.size() - kMaxLines + 1 << " values)"
+        o << "... (omitted " << s.Size() - kMaxLines + 1 << " values)"
           << std::endl;
 
-        for (size_t i = s.size() - display + 1; i < s.size(); i++) {
+        for (size_t i = s.Size() - display + 1; i < s.Size(); i++) {
             o << s[i] << std::endl;
         }
     }
@@ -42,12 +42,14 @@ Series Load(const std::string& filename) {
     std::ifstream file(filename);
     std::string line;
 
-    Series output;
+    std::vector<float> data;
+
     while (std::getline(file, line)) {
         if (line.empty()) continue;
-        output.push_back(std::stof(line));
+        data.push_back(std::stof(line));
     }
-    return output;
+
+    return Series{data};
 }
 
 std::vector<Series> LoadSeries(const std::string& filename) {
@@ -57,14 +59,14 @@ std::vector<Series> LoadSeries(const std::string& filename) {
     std::string line;
     std::string token;
 
-    std::vector<Series> columns;
+    std::vector<std::vector<float>> columns;
     while (std::getline(file, line)) {
         if (line.empty()) continue;
         std::stringstream ss(line);
         int column = 0;
         while (std::getline(ss, token, ',')) {
             if (column >= columns.size()) {
-                columns.push_back(Series{});
+                columns.push_back(std::vector<float>{});
             }
             if (!token.empty()) {
                 try {
@@ -77,7 +79,12 @@ std::vector<Series> LoadSeries(const std::string& filename) {
             column++;
         }
     }
-    return columns;
+
+    std::vector<Series> dataframe;
+    for (auto col : columns) {
+        dataframe.push_back(Series{col});
+    }
+    return dataframe;
 }
 
 void Save(const Series& series, const std::string& filename) {

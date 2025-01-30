@@ -1,17 +1,17 @@
+#include "caslib/analyze.hpp"
+
 #include <math.h>
 
 #include <cassert>
-
-#include "caslib/analyze.hpp"
 
 namespace cas {
 
 float Mean(const Series& s) {
     float total = 0;
-    for (auto si : s) {
-        total += si;
+    for (size_t i = 0; i < s.Size(); i++) {
+        total += s[i];
     }
-    return total / s.size();
+    return total / s.Size();
 }
 
 float Variance(const Series& x) {
@@ -19,23 +19,23 @@ float Variance(const Series& x) {
 }
 
 float Covariance(const Series& x, const Series& y) {
-    assert(x.size() == y.size());
+    assert(x.Size() == y.Size());
 
     float x_bar = Mean(x);
     float y_bar = Mean(y);
 
     float covar = 0;
-    for (size_t i = 0; i < x.size(); i++) {
+    for (size_t i = 0; i < x.Size(); i++) {
         covar += (x[i] - x_bar) * (y[i] - y_bar);
     }
-    return covar / x.size();
+    return covar / x.Size();
 }
 
 Series CrossCorrelation(const Series& x, const Series& y) {
-    assert(x.size() == y.size());
-    int size = x.size();
+    assert(x.Size() == y.Size());
+    int size = x.Size();
 
-    Series corel;
+    auto corel = Series::Zeros(size * 2 - 1);
 
     for (int lag = -size + 1; lag <= size - 1; lag++) {
         float covar = 0;
@@ -50,7 +50,7 @@ Series CrossCorrelation(const Series& x, const Series& y) {
             }
         }
 
-        corel.push_back(covar);
+        corel[lag + size - 1] = covar;
     }
 
     return corel;
