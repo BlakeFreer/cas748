@@ -35,7 +35,7 @@ size_t Series::size() const {
 }
 
 Series Series::Clone() const {
-    float* cpy;
+    float* cpy = new float[size()];
     std::memcpy(cpy, data_, size() * sizeof(float));
     return Series{cpy, size()};
 }
@@ -114,10 +114,10 @@ std::ostream& operator<<(std::ostream& o, const Series& x) {
     return o;
 }
 
-Series::Iterator Series::begin() {
+Iterator<float> Series::begin() {
     return Iterator{data_};
 }
-Series::Iterator Series::end() {
+Iterator<float> Series::end() {
     return Iterator{data_ + size_};
 }
 

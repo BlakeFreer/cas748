@@ -3,6 +3,8 @@
 #include <ostream>
 #include <vector>
 
+#include "itertools.hpp"
+
 namespace cas {
 
 class Series {
@@ -36,40 +38,8 @@ public:
 
     friend std::ostream& operator<<(std::ostream& o, const Series& s);
 
-    class Iterator {
-    public:
-        using iterator_category = std::bidirectional_iterator_tag;
-        using value_type = float;
-        using pointer = float*;
-        using reference = float&;
-
-        Iterator(float* p) : p_(p) {}
-        Iterator(const Iterator& it) : p_(it.p_) {}
-        Iterator& operator++() {
-            ++p_;
-            return *this;
-        }
-        Iterator operator++(int) {
-            Iterator tmp(*this);
-            operator++();
-            return tmp;
-        }
-        bool operator==(const Iterator& rhs) const {
-            return p_ == rhs.p_;
-        }
-        bool operator!=(const Iterator& rhs) const {
-            return p_ != rhs.p_;
-        }
-        float& operator*() {
-            return *p_;
-        }
-
-    private:
-        float* p_;
-    };
-
-    Iterator begin();
-    Iterator end();
+    Iterator<float> begin();
+    Iterator<float> end();
 
 private:
     size_t WrapIndex(int idx) const;
