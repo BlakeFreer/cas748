@@ -8,10 +8,10 @@ namespace cas {
 
 float Mean(const Series& s) {
     float total = 0;
-    for (size_t i = 0; i < s.Size(); i++) {
+    for (size_t i = 0; i < s.size(); i++) {
         total += s[i];
     }
-    return total / s.Size();
+    return total / s.size();
 }
 
 float Variance(const Series& x) {
@@ -19,21 +19,21 @@ float Variance(const Series& x) {
 }
 
 float Covariance(const Series& x, const Series& y) {
-    assert(x.Size() == y.Size());
+    assert(x.size() == y.size());
 
     float x_bar = Mean(x);
     float y_bar = Mean(y);
 
     float covar = 0;
-    for (size_t i = 0; i < x.Size(); i++) {
+    for (size_t i = 0; i < x.size(); i++) {
         covar += (x[i] - x_bar) * (y[i] - y_bar);
     }
-    return covar / x.Size();
+    return covar / x.size();
 }
 
 Series CrossCorrelation(const Series& x, const Series& y) {
-    assert(x.Size() == y.Size());
-    int size = x.Size();
+    assert(x.size() == y.size());
+    int size = x.size();
 
     auto corel = Series::Zeros(size * 2 - 1);
 

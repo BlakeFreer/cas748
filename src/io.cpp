@@ -17,8 +17,8 @@ std::string PrettyPrint(const Series& s) {
 
     const int kMaxLines = 10;
 
-    if (s.Size() <= kMaxLines) {
-        for (size_t i = 0; i < s.Size(); i++) {
+    if (s.size() <= kMaxLines) {
+        for (size_t i = 0; i < s.size(); i++) {
             o << s[i] << std::endl;
         }
     } else {
@@ -26,10 +26,10 @@ std::string PrettyPrint(const Series& s) {
         for (size_t i = 0; i < display; i++) {
             o << s[i] << std::endl;
         }
-        o << "... (omitted " << s.Size() - kMaxLines + 1 << " values)"
+        o << "... (omitted " << s.size() - kMaxLines + 1 << " values)"
           << std::endl;
 
-        for (size_t i = s.Size() - display + 1; i < s.Size(); i++) {
+        for (size_t i = s.size() - display + 1; i < s.size(); i++) {
             o << s[i] << std::endl;
         }
     }

@@ -1,5 +1,6 @@
-#include "gtest/gtest.h"
 #include "helpers.hpp"
+
+#include "gtest/gtest.h"
 
 void CompareSeries(const cas::Series& x, const cas::Series& y) {
     ASSERT_EQ(x.size(), y.size());
