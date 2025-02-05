@@ -3,5 +3,5 @@ target_sources(caslib
     analyze.cpp
     functions.cpp
     io.cpp
-    series.cpp
 )
+add_subdirectory(series)

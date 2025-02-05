@@ -1,59 +1,32 @@
 #include "caslib/analyze.hpp"
 
-#include <math.h>
-
 #include <cassert>
+
+#include "caslib/series.hpp"
 
 namespace cas {
 
-float Mean(const Series& s) {
-    float total = 0;
-    for (size_t i = 0; i < s.size(); i++) {
-        total += s[i];
-    }
-    return total / s.size();
-}
-
-float Variance(const Series& x) {
-    return Covariance(x, x);
-}
-
-float Covariance(const Series& x, const Series& y) {
-    assert(x.size() == y.size());
-
-    float x_bar = Mean(x);
-    float y_bar = Mean(y);
-
-    float covar = 0;
-    for (size_t i = 0; i < x.size(); i++) {
-        covar += (x[i] - x_bar) * (y[i] - y_bar);
-    }
-    return covar / x.size();
+Series CrossCovariance(const Series& x, const Series& y) {
+    return CrossCorrelation(x - x.mean(), y - y.mean());
 }
 
 Series CrossCorrelation(const Series& x, const Series& y) {
     assert(x.size() == y.size());
-    int size = x.size();
 
-    auto corel = Series::Zeros(size * 2 - 1);
+    auto corel = Series::Zeros(x.size() * 2 - 1);
 
-    for (int lag = -size + 1; lag <= size - 1; lag++) {
-        float covar = 0;
-
-        if (lag <= 0) {
-            for (int i = 0; i < size + lag; i++) {
-                covar += x[i] * y[i - lag];
-            }
-        } else {
-            for (int i = 0; i < size - lag; i++) {
-                covar += x[i + lag] * y[i];
-            }
+    for (int lag = -x.ssize() + 1; lag <= x.ssize() - 1; lag++) {
+        Series overlap;
+        if (lag < 0) {  // x is delayed
+            overlap = x.SubSeries(0, lag) * y.SubSeries(-lag, y.ssize());
+        } else if (lag == 0) {
+            overlap = x * y;
+        } else {  // y is delayed
+            overlap = x.SubSeries(lag, x.ssize()) * y.SubSeries(0, -lag);
         }
-
-        corel[lag + size - 1] = covar;
+        corel[lag + x.ssize() - 1] = overlap.sum();
     }
 
     return corel;
 }
-
 }  // namespace cas

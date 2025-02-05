@@ -1,5 +1,7 @@
 #pragma once
 
+#include <functional>
+#include <memory>
 #include <ostream>
 #include <vector>
 
@@ -10,47 +12,76 @@ namespace cas {
 class Series {
 public:
     // Constructors
-    Series(float* data, size_t size);
+    Series(size_t size);
+    Series(std::shared_ptr<float[]> data, size_t size);
     Series(std::vector<float> data);
 
     template <typename... Args>
-    Series(Args&&... args);
+        requires(std::is_arithmetic_v<Args> && ...)
+    Series(Args... args);
 
+    // Rule of 5
+    Series(const Series& other);
+    Series(Series&& other) noexcept;
+    Series& operator=(Series other);
+
+    friend void swap(Series& x, Series& y) noexcept;
+
+    // Create new Series
     Series Clone() const;
-
+    Series Apply(const std::function<float(float)>& func) const;
     static Series Zeros(size_t size);
     static Series Ones(size_t size);
 
     // Accessors
     size_t size() const;
+    int ssize() const;
 
     // Operators
     Series operator+(const Series& y) const;
     Series operator-(const Series& y) const;
-    Series operator*(const float scalar) const;
     Series operator*(const Series& y) const;
-
-    friend Series operator*(const float scalar, const Series& x);
-    Series operator/(const float divisor) const;
     Series operator-() const;
+
+    // Scalar Operators
+    Series operator*(const float scalar) const;
+    Series operator/(const float divisor) const;
+    Series operator+(const float scalar) const;
+    Series operator-(const float scalar) const;
+    friend Series operator*(const float scalar, const Series& x);
+    friend Series operator+(const float scalar, const Series& x);
+    friend Series operator-(const float scalar, const Series& x);
+
     float& operator[](int idx);
     float operator[](int idx) const;
 
     friend std::ostream& operator<<(std::ostream& o, const Series& s);
 
     Iterator<float> begin();
+    Iterator<const float> begin() const;
     Iterator<float> end();
+    Iterator<const float> end() const;
+
+    const Series SubSeries(int start_idx, int end_idx) const;
+
+    // Statistics
+    float sum() const;
+    float mean() const;
+    float variance() const;
+
+    static float Covariance(const Series& x, const Series& y);
 
 private:
-    size_t WrapIndex(int idx) const;
+    int WrapIndex(int idx) const;
 
-    float* data_;
     size_t size_;
+    std::shared_ptr<float[]> data_;
 };
 
 template <typename... Args>
-Series::Series(Args&&... args) : size_(sizeof...(args)) {
-    data_ = new float[size_]{static_cast<float>(args)...};
-}
+    requires(std::is_arithmetic_v<Args> && ...)
+Series::Series(Args... args)
+    : size_(sizeof...(args)),
+      data_(new float[size_]{static_cast<float>(args)...}) {}
 
 }  // namespace cas
