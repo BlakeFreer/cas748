@@ -68,6 +68,8 @@ public:
     float sum() const;
     float mean() const;
     float variance() const;
+    float norm_to_p(int p) const;
+    float norm(int p) const;
 
     static float Covariance(const Series& x, const Series& y);
 

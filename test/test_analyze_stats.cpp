@@ -23,3 +23,13 @@ TEST(Analyze, StatsEmpty) {
     EXPECT_FLOAT_EQ(data2.mean(), 5);
     EXPECT_FLOAT_EQ(data2.variance(), 0);
 }
+
+TEST(Analyze, Norm) {
+    Series x{3, 4};
+    EXPECT_FLOAT_EQ(x.norm(1), 7);
+
+    EXPECT_FLOAT_EQ(x.norm(2), 5);
+    EXPECT_FLOAT_EQ(x.norm_to_p(2), 25);
+
+    EXPECT_FLOAT_EQ(x.norm_to_p(3), 91);
+}
