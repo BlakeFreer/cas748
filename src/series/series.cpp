@@ -18,6 +18,13 @@ Series::Series(std::vector<float> vector)
     }
 }
 
+Series::Series(std::initializer_list<float> values)
+    : size_(values.size()), data_(new float[size_]()) {
+    for (int i = 0; i < size_; i++) {
+        data_[i] = values.begin()[i];
+    }
+}
+
 // Copy Constructor
 Series::Series(const Series& other)
     : size_(other.size_), data_(size_ ? new float[size_]() : nullptr) {
@@ -42,11 +49,11 @@ void swap(Series& x, Series& y) noexcept {
 }
 
 Series Series::Zeros(size_t size) {
-    return Series{size};
+    return Series(size);
 }
 
 Series Series::Ones(size_t size) {
-    Series s{size};
+    Series s(size);
 
     for (int i = 0; i < size; i++) {
         s[i] = 1;
@@ -63,7 +70,7 @@ int Series::ssize() const {
 }
 
 Series Series::Clone() const {
-    return Series{*this};
+    return Series(*this);
 }
 Series Series::Apply(const std::function<float(float)>& func) const {
     Series out = Clone();

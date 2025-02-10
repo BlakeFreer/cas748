@@ -18,3 +18,8 @@ TEST(SeriesConstructor, Move) {
     EXPECT_EQ(x.size(), 0);
     CompareSeries(y, {1, 2, 3});
 }
+
+TEST(SeriesConstructor, Size) {
+    Series x(10);
+    EXPECT_EQ(x.size(), 10);
+}

@@ -1,4 +1,5 @@
 #include <cmath>
+#include <vector>
 
 #include "caslib/series.hpp"
 #include "gtest/gtest.h"
@@ -13,7 +14,7 @@ TEST(Analyze, Stats) {
 }
 
 TEST(Analyze, StatsEmpty) {
-    Series data{};
+    Series data;
     EXPECT_FLOAT_EQ(data.sum(), 0);
     EXPECT_TRUE(std::isnan(data.mean()));
     EXPECT_TRUE(std::isnan(data.variance()));

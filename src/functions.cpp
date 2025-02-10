@@ -1,10 +1,12 @@
 #define _USE_MATH_DEFINES
+#include "caslib/functions.hpp"
+
 #include <math.h>
 
 #include <random>
 
-#include "caslib/functions.hpp"
 #include "caslib/series.hpp"
+
 
 namespace cas {
 
@@ -34,7 +36,7 @@ Series GenerateSamples(Function function, size_t N, float sample_freq) {
         float t = static_cast<float>(i) / sample_freq;
         samples.push_back(function(t));
     }
-    return samples;
+    return Series{samples};
 }
 
 }  // namespace cas

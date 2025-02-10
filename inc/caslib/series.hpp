@@ -12,13 +12,11 @@ namespace cas {
 class Series {
 public:
     // Constructors
-    Series(size_t size);
+    Series(size_t size = 0);
     Series(std::shared_ptr<float[]> data, size_t size);
-    Series(std::vector<float> data);
 
-    template <typename... Args>
-        requires(std::is_arithmetic_v<Args> && ...)
-    Series(Args... args);
+    Series(std::initializer_list<float> values);
+    explicit Series(std::vector<float> data);
 
     // Rule of 5
     Series(const Series& other);
@@ -79,11 +77,5 @@ private:
     size_t size_;
     std::shared_ptr<float[]> data_;
 };
-
-template <typename... Args>
-    requires(std::is_arithmetic_v<Args> && ...)
-Series::Series(Args... args)
-    : size_(sizeof...(args)),
-      data_(new float[size_]{static_cast<float>(args)...}) {}
 
 }  // namespace cas
