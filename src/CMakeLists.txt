@@ -5,3 +5,4 @@ target_sources(caslib
     io.cpp
 )
 add_subdirectory(series)
+add_subdirectory(file)

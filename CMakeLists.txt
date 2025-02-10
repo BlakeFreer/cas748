@@ -12,6 +12,11 @@ target_include_directories(caslib PUBLIC inc)
 add_subdirectory(src)
 add_subdirectory(examples)
 
+# libsndfile
+find_library(LIBSNDFILE NAMES libsndfile PATHS third-party/libsndfile/build)
+target_link_libraries(caslib PUBLIC ${LIBSNDFILE})
+target_include_directories(caslib PUBLIC third-party/libsndfile/include)
+
 set(GTEST_PATH "third-party/googletest")
 
 if(EXISTS ${GTEST_PATH}/CMakeLists.txt)
