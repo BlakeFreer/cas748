@@ -1,6 +1,7 @@
 target_sources(caslib
     PRIVATE
     analyze.cpp
+    colour.cpp
     functions.cpp
     io.cpp
     windows.cpp

@@ -8,7 +8,9 @@ TEST(Windows, Bartlett) {
     // Expected values from
     // https://numpy.org/doc/stable/reference/generated/numpy.bartlett.html
 
-    Series w = Bartlett(12);
+    Series w = window::Bartlett(12);
+
+    EXPECT_EQ(w.size(), 12);
 
     EXPECT_FLOAT_EQ(w[0], 0);
     EXPECT_FLOAT_EQ(w[1], 0.18181818);

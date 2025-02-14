@@ -10,7 +10,9 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 add_library(caslib)
 target_include_directories(caslib PUBLIC inc)
 add_subdirectory(src)
-add_subdirectory(examples)
+
+# stb
+target_include_directories(caslib PUBLIC third-party/stb)
 
 # libsndfile
 find_library(LIBSNDFILE NAMES libsndfile PATHS third-party/libsndfile/build)
@@ -20,6 +22,7 @@ target_include_directories(caslib PUBLIC third-party/libsndfile/include)
 # Add the compiler's library and include paths to CMake search paths
 set(CMAKE_LIBRARY_PATH "${CMAKE_LIBRARY_PATH};${CMAKE_CXX_IMPLICIT_LINK_DIRECTORIES}")
 set(CMAKE_INCLUDE_PATH "${CMAKE_INCLUDE_PATH};${CMAKE_CXX_IMPLICIT_INCLUDE_DIRECTORIES}")
+target_include_directories(caslib PUBLIC ${CMAKE_CXX_IMPLICIT_INCLUDE_DIRECTORIES})
 
 # Find FFTW using the extended search paths
 find_library(FFTW_LIB fftw3)
@@ -45,5 +48,6 @@ else()
     message(WARNING "Skipping tests as GoogleTest is not installed.")
 endif()
 
-set(CMAKE_CXX_STANDARD_INCLUDE_DIRECTORIES
-    ${CMAKE_CXX_IMPLICIT_INCLUDE_DIRECTORIES})
+set(CMAKE_CXX_STANDARD_INCLUDE_DIRECTORIES ${CMAKE_CXX_IMPLICIT_INCLUDE_DIRECTORIES})
+
+add_subdirectory(examples)

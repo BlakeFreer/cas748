@@ -4,11 +4,10 @@
 #include "caslib/windows.hpp"
 
 #include <cmath>
-#include <iostream>
 
 #include "caslib/series.hpp"
 
-namespace cas {
+namespace cas::window {
 
 Series Hanning(int N) {
     const float omega = 2 * std::numbers::pi / (N - 1);
@@ -44,11 +43,14 @@ Series Bartlett(int N) {
     const float x = (N - 1) / 2.f;
     Series w(N);
     for (int n = 0; n < N; n++) {
-        std::cout << n << std::endl;
         float nf = static_cast<float>(n);
         w[n] = (x - std::abs(nf - x)) / x;
     }
     return w;
 }
 
-}  // namespace cas
+Series Rectangular(int N) {
+    return Series::Ones(N) / N;
+}
+
+}  // namespace cas::window

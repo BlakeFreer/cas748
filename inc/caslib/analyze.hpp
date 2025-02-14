@@ -15,4 +15,6 @@ Series CrossCorrelation(const Series& x, const Series& y);
 
 Series CrossCovariance(const Series& x, const Series& y);
 
+Series FourierTransform(const Series& x);
+
 }  // namespace cas
