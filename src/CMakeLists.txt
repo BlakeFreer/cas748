@@ -3,7 +3,6 @@ target_sources(caslib
     analyze.cpp
     colour.cpp
     functions.cpp
-    io.cpp
     windows.cpp
 )
 add_subdirectory(series)

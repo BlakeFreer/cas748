@@ -1,1 +1,4 @@
-target_sources(caslib PRIVATE wav.cpp)
+target_sources(caslib
+    PRIVATE
+    csv.cpp
+    wav.cpp)

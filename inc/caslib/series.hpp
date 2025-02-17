@@ -71,6 +71,11 @@ public:
 
     static float Covariance(const Series& x, const Series& y);
 
+    // I/O
+    std::string PrettyPrint() const;
+    static Series Load(const std::string& filename);
+    void Save(const std::string& filename) const;
+
 private:
     int WrapIndex(int idx) const;
 
