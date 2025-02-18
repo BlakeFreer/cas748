@@ -9,13 +9,13 @@ float& Series::operator[](int idx) {
     size_t i = WrapIndex(idx);
     assert(0 <= i && i < size());
 
-    return data_[i];
+    return data_[i * stride_];
 }
 float Series::operator[](int idx) const {
     size_t i = WrapIndex(idx);
     assert(0 <= i && i < size());
 
-    return data_[i];
+    return data_[i * stride_];
 }
 
 Series Series::operator+(const Series& y) const {

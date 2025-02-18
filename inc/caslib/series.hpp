@@ -13,7 +13,7 @@ class Series {
 public:
     // Constructors
     Series(size_t size = 0);
-    Series(std::shared_ptr<float[]> data, size_t size);
+    Series(std::shared_ptr<float[]> data, size_t size, size_t stride = 1);
 
     Series(std::initializer_list<float> values);
     explicit Series(std::vector<float> data);
@@ -60,7 +60,8 @@ public:
     Iterator<float> end();
     Iterator<const float> end() const;
 
-    const Series SubSeries(int start_idx, int end_idx) const;
+    Series View(int start_idx, int end_idx, size_t stride = 1);
+    const Series View(int start_idx, int end_idx, size_t stride = 1) const;
 
     // Statistics
     float sum() const;
@@ -77,10 +78,12 @@ public:
     void Save(const std::string& filename) const;
 
 private:
+    Series ViewImpl(int start_idx, int end_idx, size_t stride = 1) const;
     int WrapIndex(int idx) const;
 
     size_t size_;
     std::shared_ptr<float[]> data_;
+    size_t stride_ = 1;
 };
 
 }  // namespace cas

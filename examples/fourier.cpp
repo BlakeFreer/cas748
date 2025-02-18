@@ -60,7 +60,7 @@ int main(int argc, char* argv[]) {
     // Compute the FT spectrum over time
     std::vector<Series> spectrum;
     for (int start = 0; start + N <= audio.size(); start += conf.hop) {
-        Series sample = audio.SubSeries(start, start + N);
+        Series sample = audio.View(start, start + N);
         Series ft = FourierTransform(window * sample).Apply([](auto f) {
             return 10 * std::log10(f);
         });

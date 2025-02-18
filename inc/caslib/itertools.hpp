@@ -11,9 +11,10 @@ public:
     using reference = T&;
 
     Iterator(T* p) : p_(p) {}
-    Iterator(const Iterator& it) : p_(it.p_) {}
+    Iterator(T* p, size_t stride) : p_(p), stride_(stride) {}
+    Iterator(const Iterator& it) : p_(it.p_), stride_(it.stride_) {}
     Iterator& operator++() {
-        ++p_;
+        p_ = p_ + stride_;
         return *this;
     }
     Iterator operator++(int) {
@@ -33,6 +34,7 @@ public:
 
 private:
     T* p_;
+    size_t stride_ = 1;
 };
 
 }  // namespace cas

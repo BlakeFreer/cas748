@@ -7,8 +7,8 @@ namespace cas {
 
 Series::Series(size_t size) : size_(size), data_(new float[size_]()) {}
 
-Series::Series(std::shared_ptr<float[]> data, size_t size)
-    : size_(size), data_(data) {}
+Series::Series(std::shared_ptr<float[]> data, size_t size, size_t step)
+    : size_(size), data_(data), stride_(step) {}
 
 Series::Series(std::vector<float> vector)
     : size_(vector.size()), data_(size_ ? new float[size_]() : nullptr) {
@@ -81,10 +81,10 @@ Series Series::Apply(const std::function<float(float)>& func) const {
 }
 
 Iterator<float> Series::begin() {
-    return Iterator{data_.get()};
+    return Iterator{data_.get(), stride_};
 }
 Iterator<float> Series::end() {
-    return Iterator{data_.get() + size()};
+    return Iterator{data_.get() + stride_ * size()};
 }
 
 Iterator<const float> Series::begin() const {
@@ -94,15 +94,27 @@ Iterator<const float> Series::end() const {
     return Iterator<const float>{data_.get() + size()};
 }
 
-const Series Series::SubSeries(int start_idx, int end_idx) const {
+Series Series::ViewImpl(int start_idx, int end_idx, size_t stride) const {
     start_idx = WrapIndex(start_idx);
     end_idx = WrapIndex(end_idx);
 
     assert(start_idx <= end_idx);
     assert(end_idx <= ssize());
+    assert(1 <= stride);
 
-    return Series{{data_, data_.get() + start_idx},
-                  static_cast<size_t>(end_idx - start_idx)};
+    return Series{
+        {data_, data_.get() + start_idx},
+        static_cast<size_t>(end_idx - start_idx - 1) / stride + 1,
+        stride,
+    };
+}
+
+Series Series::View(int start_idx, int end_idx, size_t stride) {
+    return ViewImpl(start_idx, end_idx, stride);
+}
+
+const Series Series::View(int start_idx, int end_idx, size_t stride) const {
+    return ViewImpl(start_idx, end_idx, stride);
 }
 
 int Series::WrapIndex(int idx) const {
