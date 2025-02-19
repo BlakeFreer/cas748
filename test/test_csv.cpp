@@ -15,8 +15,15 @@ TEST(IO, LoadCSV_Single) {
     EXPECT_TRUE(loaded.isApprox(expected));
 }
 
+TEST(IO, LoadCSVHeader) {
+    Eigen::ArrayXXd table;
+    EXPECT_THROW(table = LoadCSV("data/test_load_dataset.csv"),
+                 std::invalid_argument);
+}
+
 TEST(IO, LoadCSV) {
-    Eigen::ArrayXXd table = LoadCSV("data/test_load_dataset.csv");
+    Eigen::ArrayXXd table;
+    EXPECT_NO_THROW(table = LoadCSV("data/test_load_dataset.csv", 1));
 
     ASSERT_EQ(table.cols(), 4);
     ASSERT_EQ(table.rows(), 6);

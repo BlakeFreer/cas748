@@ -2,17 +2,39 @@
 
 #include <cassert>
 #include <cmath>
+#include <filesystem>
+#include <format>
 #include <fstream>
+#include <vector>
 
 namespace cas {
 
-void SaveCSV(std::string filename, const Eigen::ArrayXXd& array,
-             std::string delimiter, int precision) {
+void SaveCSV(std::filesystem::path filename, const Eigen::ArrayXXd& array,
+             std::vector<std::string> header, std::string delimiter,
+             int precision) {
     std::ofstream of(filename);
 
     if (!of.is_open()) {
-        throw std::runtime_error("Failed to open " + filename +
+        throw std::runtime_error("Failed to open " + filename.string() +
                                  " for writing.");
+    }
+
+    if (!header.empty()) {
+        if (header.size() != array.cols()) {
+            std::string err = std::format(
+                "Header length ({}) does not match number of columns in data "
+                "({}).",
+                header.size(), array.cols());
+            throw std::invalid_argument(err);
+        }
+        for (int i = 0; i < header.size(); i++) {
+            of << header[i];
+            if (i == header.size() - 1) {
+                of << "\n";
+            } else {
+                of << ',';
+            }
+        }
     }
 
     auto fmt =
@@ -21,47 +43,61 @@ void SaveCSV(std::string filename, const Eigen::ArrayXXd& array,
 }
 
 namespace {
-bool isvaluechar(char c) {
-    return std::isdigit(c) || c == '.' || c == '-';
+bool should_trim(char c) {
+    return std::isspace(c) || c == '"';
 }
-void trim_token(std::string& s) {
-    // strip non-digit leading and trailing characters
-    // in particular, converts "123" to 123
+std::string trim_token(const std::string& s) {
+    size_t start = 0;
+    size_t end = s.size();
 
-    while (!s.empty() && !isvaluechar(s.front())) {
-        s.erase(0, 1);
+    while (start < end && should_trim(s[start])) {
+        ++start;
     }
-    while (!s.empty() && !isvaluechar(s.back())) {
-        s.pop_back();
+    while (end > start && should_trim(s[end - 1])) {
+        --end;
     }
+
+    return s.substr(start, end - start);
 }
 }  // namespace
 
-Eigen::ArrayXXd LoadCSV(std::string filename, char delimiter) {
+Eigen::ArrayXXd LoadCSV(std::filesystem::path filename, int skip_lines,
+                        char delimiter) {
     std::ifstream file(filename);
 
     if (!file.is_open()) {
-        throw std::runtime_error("Could not open file: " + filename);
+        throw std::runtime_error("Could not open file: " + filename.string());
     }
 
     std::vector<std::vector<double>> data;
     std::string line;
+
+    int line_no = 0;
+    for (; line_no < skip_lines; line_no++) {
+        std::getline(file, line);
+    }
 
     while (std::getline(file, line)) {
         std::vector<double> row;
         std::stringstream ss(line);
         std::string token;
 
-        while (std::getline(ss, token, ',')) {
-            trim_token(token);
-
-            if (token.empty()) {
-                row.push_back(std::nan(0));
-            } else {
-                row.push_back(std::stod(token));
+        while (std::getline(ss, token, delimiter)) {
+            try {
+                row.push_back(std::stod(trim_token(token)));
+            } catch (const std::invalid_argument& e) {
+                std::string err_msg = std::format(
+                    "Invalid value '{}' in line {} of {}. {}({})", token,
+                    line_no + 1, filename.string(),
+                    (line_no == 0) ? " Did you mean to pass skip_lines=1 to "
+                                     "skip the header? "
+                                   : "",
+                    e.what());
+                throw std::invalid_argument(err_msg);
             }
         }
         data.push_back(row);
+        line_no++;
     }
 
     file.close();

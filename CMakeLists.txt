@@ -44,3 +44,4 @@ target_include_directories(caslib PUBLIC ${FFTW_INCLUDE_DIR})
 
 add_subdirectory(test)
 add_subdirectory(assignments)
+add_subdirectory(scripts)
