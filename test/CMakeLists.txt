@@ -1,21 +1,31 @@
-enable_testing()
+set(GTEST_PATH "${CMAKE_SOURCE_DIR}/third-party/googletest")
 
-file(GLOB test_src *.cpp)
-add_executable(test ${test_src})
+if(EXISTS ${GTEST_PATH}/CMakeLists.txt)
+    set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+    add_subdirectory(${GTEST_PATH} ${CMAKE_BINARY_DIR}/gtest)
 
-file(COPY data DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+    enable_testing()
 
-target_link_libraries(test caslib)
+    file(GLOB test_src *.cpp)
+    add_executable(test ${test_src})
 
-target_link_libraries(test GTest::gtest_main)
-include(GoogleTest)
-gtest_discover_tests(test)
+    file(COPY data DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 
-set(UNIT_TEST test)
-add_custom_command(
-    TARGET ${UNIT_TEST}
-    COMMENT "Run tests"
-    POST_BUILD
-    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-    COMMAND ${UNIT_TEST}
-)
+    target_link_libraries(test PUBLIC caslib)
+
+    target_link_libraries(test PUBLIC GTest::gtest_main)
+    include(GoogleTest)
+    gtest_discover_tests(test)
+
+    set(UNIT_TEST test)
+    add_custom_command(
+        TARGET ${UNIT_TEST}
+        COMMENT "Run tests"
+        POST_BUILD
+        WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+        COMMAND ${UNIT_TEST}
+    )
+
+else()
+    message(WARNING "Skipping tests as GoogleTest is not installed.")
+endif()

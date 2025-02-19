@@ -22,6 +22,7 @@ target_include_directories(caslib PUBLIC third-party/libsndfile/include)
 # Add the compiler's library and include paths to CMake search paths
 set(CMAKE_LIBRARY_PATH "${CMAKE_LIBRARY_PATH};${CMAKE_CXX_IMPLICIT_LINK_DIRECTORIES}")
 set(CMAKE_INCLUDE_PATH "${CMAKE_INCLUDE_PATH};${CMAKE_CXX_IMPLICIT_INCLUDE_DIRECTORIES}")
+set(CMAKE_CXX_STANDARD_INCLUDE_DIRECTORIES ${CMAKE_CXX_IMPLICIT_INCLUDE_DIRECTORIES})
 target_include_directories(caslib PUBLIC ${CMAKE_CXX_IMPLICIT_INCLUDE_DIRECTORIES})
 
 # Find FFTW using the extended search paths
@@ -35,19 +36,11 @@ else()
     message(FATAL_ERROR "FFTW was not found on your system!")
 endif()
 
+# Eigen
+# find_library(EIGEN_LIB Eigen)
+# target_link_libraries(caslib PUBLIC ${EIGEN_LIB})
 target_link_libraries(caslib PUBLIC ${FFTW_LIB})
 target_include_directories(caslib PUBLIC ${FFTW_INCLUDE_DIR})
 
-set(GTEST_PATH "third-party/googletest")
-
-if(EXISTS ${GTEST_PATH}/CMakeLists.txt)
-    set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
-    add_subdirectory(${GTEST_PATH})
-    add_subdirectory(test)
-else()
-    message(WARNING "Skipping tests as GoogleTest is not installed.")
-endif()
-
-set(CMAKE_CXX_STANDARD_INCLUDE_DIRECTORIES ${CMAKE_CXX_IMPLICIT_INCLUDE_DIRECTORIES})
-
-add_subdirectory(examples)
+add_subdirectory(test)
+add_subdirectory(assignments)

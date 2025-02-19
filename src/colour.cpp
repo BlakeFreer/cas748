@@ -2,7 +2,6 @@
 
 #include <stdexcept>
 
-
 namespace cas {
 
 Colour Colour::Interpolate(const Colour& c1, const Colour& c2, float t) {
@@ -29,6 +28,7 @@ ContinuousColourMap::ContinuousColourMap(std::initializer_list<Colour> colours)
 Colour ContinuousColourMap::Get(float t) const {
     if (t <= mini_) return colours_.front();
     if (t >= maxi_) return colours_.back();
+    if (std::isnan(t)) return colours_.front();
 
     t = (t - mini_) / (maxi_ - mini_);  // rescale
     t *= colours_.size() - 1;           // convert to index

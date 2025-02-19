@@ -1,9 +1,5 @@
 target_sources(caslib
     PRIVATE
-    analyze.cpp
     colour.cpp
-    functions.cpp
-    windows.cpp
+    csv.cpp
 )
-add_subdirectory(series)
-add_subdirectory(file)
