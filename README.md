@@ -21,6 +21,13 @@ This generates `build/libcaslib.a`. Compile your project against it.
 g++ main.cpp -L build -l caslib -I inc
 ```
 
+## Dependencies
+
+These libraries must be installed on your system.
+
+- Eigen3
+- FFTW3
+
 ### Testing
 
 First clone the repo with submodules to install GoogleTest.
@@ -29,11 +36,4 @@ First clone the repo with submodules to install GoogleTest.
 git clone https://github.com/BlakeFreer/cas748.git --recurse-submodules
 ```
 
-Rebuild the library as above to build a test executable. Navigate to the build directory and run the `test` executable.
-
-```bash
-cd build/test
-./test
-```
-
-__Warning:__ Do not run `./build/test/test` from the `caslib/` directory since it requires files relative to the executable's directory.
+Re-run the CMake configuration and build steps. The tests will run automatically.
