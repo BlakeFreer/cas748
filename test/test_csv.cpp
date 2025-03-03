@@ -2,6 +2,7 @@
 
 #include "caslib/csv.hpp"
 #include "gtest/gtest.h"
+#include "helper.hpp"
 
 using namespace cas;
 
@@ -12,7 +13,7 @@ TEST(IO, LoadCSV_Single) {
     ASSERT_EQ(loaded.rows(), expected.rows());
     ASSERT_EQ(loaded.cols(), expected.cols());
 
-    EXPECT_TRUE(loaded.isApprox(expected));
+    EXPECT_ARRAY_EQ(loaded, expected);
 }
 
 TEST(IO, LoadCSVHeader) {

@@ -1,5 +1,6 @@
 #include "caslib/analyze.hpp"
 #include "gtest/gtest.h"
+#include "helper.hpp"
 
 using namespace cas;
 
@@ -10,5 +11,5 @@ TEST(Analyze, CrossCorrelation) {
     Eigen::ArrayXd cc = CrossCorrelation(x, y);
     Eigen::ArrayXd expected{{5, 9, 12, 14, 15, 10, 6, 3, 1}};
 
-    EXPECT_TRUE(cc.isApprox(expected));
+    EXPECT_ARRAY_EQ(cc, expected);
 }
