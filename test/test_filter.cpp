@@ -79,3 +79,13 @@ TEST(Filter, SavitzkyGolay) {
     EXPECT_ARRAY_EQ(filter::SavitzkyGolay(9, 4), expected);
     EXPECT_ARRAY_EQ(filter::SavitzkyGolay(9, 5), expected);
 }
+
+TEST(Filter, SavitzkyGolayParabola) {
+    // The a 2nd degree filter should pass parabolas
+    Eigen::ArrayXd signal{{9, 4, 1, 0, 1, 4, 9}};
+    Eigen::ArrayXd filter = filter::SavitzkyGolay(3, 2);
+
+    Eigen::ArrayXd out =
+        ApplyFilter(signal, filter)(Eigen::seq(2, Eigen::last - 2));
+    EXPECT_ARRAY_EQ(out, signal(Eigen::seq(1, 5)));
+}
