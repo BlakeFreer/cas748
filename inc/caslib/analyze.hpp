@@ -1,6 +1,7 @@
 #pragma once
 
 #include <Eigen/Core>
+#include <iostream>
 
 namespace cas {
 
@@ -53,6 +54,34 @@ Derived CrossCorrelation(const Eigen::ArrayBase<Derived>& x,
     }
 
     return corel;
+}
+
+template <typename Derived>
+Derived Pad(const Eigen::ArrayBase<Derived>& signal, int count,
+            typename Derived::Scalar constant = 0) {
+    if (count < 0) {
+        throw std::invalid_argument("Padding amount must be nonnegative");
+    }
+    Derived padded = Derived::Zero(signal.size() + 2 * count);
+    padded += constant;
+    padded(Eigen::seq(count, Eigen::last - count)) = signal;
+    return padded;
+}
+
+/// @brief Apply a filter.
+template <typename Derived>
+Derived ApplyFilter(const Eigen::ArrayBase<Derived>& signal,
+                    const Eigen::ArrayBase<Derived>& filter) {
+    Derived padded = Pad(signal, filter.size() - 1);
+
+    Derived out(signal.size() + filter.size() - 1);
+
+    // NOT EFFICIENT - direct convolution
+    for (int i = 0; i < out.size(); i++) {
+        Eigen::ArrayXd sub = padded(Eigen::seq(i, i + filter.size() - 1));
+        out[i] = (sub * filter.reverse()).sum();
+    }
+    return out;
 }
 
 }  // namespace cas
