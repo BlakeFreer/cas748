@@ -3,10 +3,8 @@
 #include <fftw3.h>
 
 #include <Eigen/Core>
-#include <algorithm>
 #include <cmath>
 #include <iostream>
-#include <vector>
 
 #include "caslib/audio.hpp"
 #include "caslib/colour.hpp"
