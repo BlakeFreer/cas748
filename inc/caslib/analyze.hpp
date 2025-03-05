@@ -1,7 +1,6 @@
 #pragma once
 
 #include <Eigen/Core>
-#include <iostream>
 
 namespace cas {
 
@@ -83,5 +82,8 @@ Derived ApplyFilter(const Eigen::ArrayBase<Derived>& signal,
     }
     return out;
 }
+
+Eigen::ArrayXd PolynomialFit(int degree, const Eigen::ArrayXd& y,
+                             const Eigen::ArrayXd& x);
 
 }  // namespace cas
