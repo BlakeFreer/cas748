@@ -10,3 +10,6 @@
 [submodule "third-party/CLI11"]
 	path = scripts/CLI11
 	url = https://github.com/CLIUtils/CLI11.git
+[submodule "assignments/project/free-spoken-digit-dataset"]
+	path = assignments/project/free-spoken-digit-dataset
+	url = https://github.com/Jakobovski/free-spoken-digit-dataset.git
