@@ -86,4 +86,24 @@ Derived ApplyFilter(const Eigen::ArrayBase<Derived>& signal,
 Eigen::ArrayXd PolynomialFit(int degree, const Eigen::ArrayXd& y,
                              const Eigen::ArrayXd& x);
 
+/// @brief Compute the new basis vectors with PCA.
+/// The vectors are sorted by decreasing variance.
+///
+/// @param data NxD, N points of dimension D
+/// @return Eigen::ArrayXXd
+Eigen::ArrayXXd PrincipleComponentAnalysis(const Eigen::ArrayXXd& data);
+
+/// @brief Compute the optimal SVM separating hyperplane.
+///
+/// @param data NxD, N points of D dimensions
+/// @note Assumes the data has zero mean
+/// @param labels [-1, +1] for each point.
+/// @return Eigen::ArrayXd w for f(x)=wT x
+Eigen::ArrayXd SupportVectorMachine(const Eigen::ArrayXXd& data,
+                                    const Eigen::ArrayXi& labels);
+
+int KNearestNeighbours(const Eigen::ArrayXXd& data,
+                       const Eigen::ArrayXi& labels,
+                       const Eigen::ArrayXd& point, int k);
+
 }  // namespace cas
