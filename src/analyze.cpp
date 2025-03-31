@@ -74,26 +74,20 @@ int KNearestNeighbours(const Eigen::ArrayXXd& data,
 
     if (k == 1) return distances[0].first;
 
-    // count repetitions in first k elements
+    // vote over the first k elements
+    int max_vote = 0;
+    int best_label;
     std::map<int, int> count;
+
     for (int i = 0; i < k; i++) {
-        auto v = distances[i].first;
-        if (count.contains(v)) {
-            count[v]++;
-        } else {
-            count[v] = 1;
+        int label = distances[i].first;
+        int votes = ++count[label];
+        if (votes > max_vote) {
+            best_label = label;
+            max_vote = votes;
         }
     }
 
-    // find most common label among k nearest neighbours
-    int best_label;
-    int max_vote = 0;
-    for (auto [k, v] : count) {
-        if (v > max_vote) {
-            max_vote = v;
-            best_label = k;
-        }
-    }
     return best_label;
 }
 
