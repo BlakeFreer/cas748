@@ -15,7 +15,7 @@ add_subdirectory(src)
 target_include_directories(caslib PUBLIC third-party/stb)
 
 # libsndfile
-find_library(LIBSNDFILE NAMES libsndfile PATHS third-party/libsndfile/build)
+find_library(LIBSNDFILE NAMES sndfile PATHS third-party/libsndfile/build)
 target_link_libraries(caslib PUBLIC ${LIBSNDFILE})
 target_include_directories(caslib PUBLIC third-party/libsndfile/include)
 
