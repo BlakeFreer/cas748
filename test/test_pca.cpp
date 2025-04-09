@@ -13,7 +13,7 @@ TEST(PCA, Exact) {
         {1, -1},
         {-1, 1},
     }};
-    auto x = cas::PrincipleComponentAnalysis(data);
+    Eigen::ArrayXXd x = cas::PrincipleComponentAnalysis(data);
     Eigen::ArrayXXd expected_evec{{
         {1, 1},
         {-1, 1},

@@ -2,53 +2,10 @@
 
 #include <Eigen/Dense>
 #include <Eigen/Eigenvalues>
-#include <iostream>
 #include <map>
 #include <vector>
 
 namespace cas {
-
-Eigen::ArrayXd PolynomialFit(int degree, const Eigen::ArrayXd& y,
-                             const Eigen::ArrayXd& x) {
-    if (x.size() != y.size()) {
-        throw std::runtime_error("x and y must have the same size.");
-    }
-    int N = x.size();
-    Eigen::MatrixXd A(N, degree + 1);
-
-    for (int i = 0; i <= degree; i++) {
-        A.col(i) = x.pow(i);
-    }
-
-    Eigen::VectorXd coeffs =
-        (A.transpose() * A).inverse() * A.transpose() * y.matrix();
-    return coeffs.array();
-}
-
-Eigen::ArrayXXd PrincipleComponentAnalysis(const Eigen::ArrayXXd& data) {
-    Eigen::MatrixXd A = data.matrix().transpose() * data.matrix();
-    Eigen::SelfAdjointEigenSolver<Eigen::MatrixXd> es(A);
-
-    if (es.info() != Eigen::Success) {
-        std::runtime_error("SelfAdjointEigenSolver failed in PCA");
-    }
-
-    Eigen::VectorXd eigenvalues = es.eigenvalues();
-    Eigen::MatrixXd eigenvectors = es.eigenvectors();
-
-    std::vector<std::pair<double, Eigen::VectorXd>> eigen_pairs;
-    for (int i = 0; i < eigenvalues.size(); ++i) {
-        eigen_pairs.emplace_back(eigenvalues(i), eigenvectors.col(i));
-    }
-
-    std::sort(eigen_pairs.begin(), eigen_pairs.end(),
-              [](const auto& a, const auto& b) { return a.first > b.first; });
-
-    for (int i = 0; i < eigenvalues.size(); ++i) {
-        eigenvectors.col(i) = eigen_pairs[i].second;
-    }
-    return eigenvectors;
-}
 
 Eigen::ArrayXXd SupportVectorMachine(const Eigen::ArrayXXd& data,
                                      const Eigen::ArrayXd& labels);
