@@ -104,8 +104,11 @@ Eigen::ArrayXd PolynomialFit(int degree, const Eigen::ArrayBase<Derived>& xy) {
     }
 
     Eigen::MatrixXd ATA = A.transpose() * A;
+    // Eigen::VectorXd coeffs =
+    //     ATA.colPivHouseholderQr().solve(A.transpose() * xy.col(1).matrix());
+
     Eigen::VectorXd coeffs =
-        ATA.colPivHouseholderQr().solve(A.transpose() * xy.col(1).matrix());
+        (A.transpose() * A).inverse() * A.transpose() * xy.col(1).matrix();
 
     return coeffs.array();
 }
