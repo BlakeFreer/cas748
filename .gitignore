@@ -4,3 +4,4 @@ build/
 .clangd
 *.exe
 out
+.env*
